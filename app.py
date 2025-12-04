@@ -24,7 +24,7 @@ metric = st.sidebar.selectbox(
 st.subheader("Overall KPIs (across all scenarios)")
 col1, col2, col3 = st.columns(3)
 col1.metric("Avg Cost", f"${solutions['total_cost'].mean():.2f}/hr")
-col2.metric("Avg Shortfall", f"{solutions['shortfall'].mean():.3f}")
+col2.metric("Avg Shortfall", f"{solutions['shortfall_total'].mean():.3f}")
 col3.metric("Avg Latency Excess (ms)", f"{solutions['latency_excess'].mean():.2f}")
 
 # --- Scenario-level view ---
