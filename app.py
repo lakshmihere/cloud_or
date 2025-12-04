@@ -45,22 +45,6 @@ ax1.set_ylabel("Number of tasks")
 ax1.set_title("Tasks per instance type")
 st.pyplot(fig1)
 
-# --- Cost vs Shortfall Scatter ---
-fig, ax = plt.subplots()
-ax.scatter(solutions["total_cost"], solutions["shortfall_total"])
-ax.set_xlabel("Total Cost (per hour)")
-ax.set_ylabel("Total Shortfall (CPU + MEM)")
-ax.set_title("Cost vs Total Shortfall Across Scenarios")
-st.pyplot(fig)
-
-# Distribution of Latency SLO Violations
-fig, ax = plt.subplots()
-ax.hist(solutions["latency_excess"], bins=20)
-ax.set_xlabel("Latency Excess (ms over SLO)")
-ax.set_ylabel("Number of Scenarios")
-ax.set_title("Distribution of Latency SLO Violations")
-st.pyplot(fig)
-
 # Task Allocation by Instance Type (bar chart)
 tasks_per_instance = (
     allocations.groupby("instance_type")["task_id"]
@@ -73,4 +57,20 @@ tasks_per_instance.plot(kind="bar", ax=ax)
 ax.set_xlabel("Instance Type")
 ax.set_ylabel("Number of Tasks Assigned")
 ax.set_title("Task Allocation by Instance Type")
+st.pyplot(fig)
+
+# Distribution of Latency SLO Violations
+fig, ax = plt.subplots()
+ax.hist(solutions["latency_excess"], bins=20)
+ax.set_xlabel("Latency Excess (ms over SLO)")
+ax.set_ylabel("Number of Scenarios")
+ax.set_title("Distribution of Latency SLO Violations")
+st.pyplot(fig)
+
+# --- Cost vs Shortfall Scatter ---
+fig, ax = plt.subplots()
+ax.scatter(solutions["total_cost"], solutions["shortfall_total"])
+ax.set_xlabel("Total Cost (per hour)")
+ax.set_ylabel("Total Shortfall (CPU + MEM)")
+ax.set_title("Cost vs Total Shortfall Across Scenarios")
 st.pyplot(fig)
