@@ -32,7 +32,7 @@ st.subheader(f"Scenario {scenario_id} details")
 
 scen = solutions[solutions["scenario_id"] == scenario_id].iloc[0]
 st.write(f"**Total cost:** ${scen['total_cost']:.2f} / hr")
-st.write(f"**Shortfall:** {scen['shortfall']:.3f}")
+st.write(f"**Shortfall:** {scen['shortfall_total']:.3f}")
 st.write(f"**Latency excess:** {scen['latency_excess']:.2f} ms")
 
 # Allocation breakdown for this scenario
@@ -48,7 +48,7 @@ st.pyplot(fig1)
 # --- Cost vs Shortfall Scatter ---
 st.subheader("Cost vs Risk (all scenarios)")
 fig2, ax2 = plt.subplots()
-ax2.scatter(solutions["total_cost"], solutions["shortfall"])
+ax2.scatter(solutions["total_cost"], solutions["shortfall_total"])
 ax2.set_xlabel("Total cost")
 ax2.set_ylabel("Shortfall")
 st.pyplot(fig2)
