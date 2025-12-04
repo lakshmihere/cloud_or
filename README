@@ -1,0 +1,15 @@
+# Risk-Aware Cloud Provisioning Dashboard
+
+This Streamlit application visualizes results from a risk-aware MIP provisioning 
+model with 200 Monte Carlo scenarios. It allows users to explore trade-offs 
+between cost, capacity risk, and latency SLO violations.
+
+## Features
+- Scenario explorer (1–200)
+- Cost vs. risk trade-off plots
+- Instance allocation visualizations
+- KPI summaries
+
+## Run Locally
+pip install -r requirements.txt
+streamlit run app.py
