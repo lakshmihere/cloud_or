@@ -2,6 +2,61 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def show_cost_risk_multi_lambda(csv_path: str = "solutions_all.csv"):
+    """Cost vs Risk plot across multiple lambda_penalty values."""
+    # Load data
+    df = pd.read_csv(csv_path)
+
+    # Basic sanity check
+    if "lambda_penalty" not in df.columns:
+        st.error("Column 'lambda_penalty' not found in solutions_all.csv")
+        st.stop()
+    if "total_cost" not in df.columns or "shortfall_total" not in df.columns:
+        st.error("Columns 'total_cost' and 'shortfall_total' are required.")
+        st.stop()
+
+    st.subheader("Cost vs Risk for Different λ_penalty Settings")
+
+    # Let user choose which λ values to visualize
+    lam_options = sorted(df["lambda_penalty"].unique())
+    selected_lams = st.multiselect(
+        "Select λ_penalty values to display",
+        lam_options,
+        default=lam_options,  # show all by default
+    )
+
+    if not selected_lams:
+        st.info("Select at least one λ_penalty value to display.")
+        return
+
+    sub = df[df["lambda_penalty"].isin(selected_lams)]
+
+    # Build scatter plot
+    fig, ax = plt.subplots()
+    for lam, grp in sub.groupby("lambda_penalty"):
+        ax.scatter(
+            grp["total_cost"],
+            grp["shortfall_total"],
+            label=f"λ = {lam}",
+            alpha=0.7,
+        )
+
+    ax.set_xlabel("Total Cost (per hour)")
+    ax.set_ylabel("Total Shortfall (CPU + MEM)")
+    ax.set_title("Cost–Risk Trade-offs Across λ_penalty")
+    ax.legend(title="λ_penalty")
+
+    st.pyplot(fig)
+
+    # Optional: show summary table
+    st.markdown("### Scenario Summary (filtered)")
+    st.dataframe(
+        sub[["scenario_id", "lambda_penalty", "total_cost", "shortfall_total", "latency_excess"]]
+        .sort_values(["lambda_penalty", "scenario_id"])
+        .reset_index(drop=True)
+    )
+
+
 # Load precomputed results
 solutions = pd.read_csv("solutions.csv")
 allocations = pd.read_csv("allocations.csv")
@@ -52,6 +107,17 @@ ax.set_xlabel("Latency Excess (ms over SLO)")
 ax.set_ylabel("Number of Scenarios")
 ax.set_title("Distribution of Latency SLO Violations")
 st.pyplot(fig)
+
+st.title("Risk-Aware Cloud Provisioning Dashboard")
+
+# Existing tabs
+tab_overview, tab_risk, tab_alloc, tab_tradeoff = st.tabs(
+    ["Overview", "Risk (single run)", "Allocations", "Cost–Risk Tradeoff"]
+)
+
+with tab_tradeoff:
+    show_cost_risk_multi_lambda("solutions_all.csv")
+
 
 # --- Cost vs Shortfall Scatter ---
 fig, ax = plt.subplots()
