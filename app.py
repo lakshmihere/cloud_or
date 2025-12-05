@@ -45,20 +45,6 @@ ax1.set_ylabel("Number of tasks")
 ax1.set_title("Tasks per instance type")
 st.pyplot(fig1)
 
-# Task Allocation by Instance Type (bar chart)
-tasks_per_instance = (
-    allocations.groupby("instance_type")["task_id"]
-    .nunique()
-    .sort_values(ascending=False)
-)
-
-fig, ax = plt.subplots()
-tasks_per_instance.plot(kind="bar", ax=ax)
-ax.set_xlabel("Instance Type")
-ax.set_ylabel("Number of Tasks Assigned")
-ax.set_title("Task Allocation by Instance Type")
-st.pyplot(fig)
-
 # Distribution of Latency SLO Violations
 fig, ax = plt.subplots()
 ax.hist(solutions["latency_excess"], bins=20)
