@@ -118,11 +118,3 @@ tab_overview, tab_risk, tab_alloc, tab_tradeoff = st.tabs(
 with tab_tradeoff:
     show_cost_risk_multi_lambda("solutions_all.csv")
 
-
-# --- Cost vs Shortfall Scatter ---
-fig, ax = plt.subplots()
-ax.scatter(solutions["total_cost"], solutions["shortfall_total"])
-ax.set_xlabel("Total Cost (per hour)")
-ax.set_ylabel("Total Shortfall (CPU + MEM)")
-ax.set_title("Cost vs Total Shortfall Across Scenarios")
-st.pyplot(fig)
